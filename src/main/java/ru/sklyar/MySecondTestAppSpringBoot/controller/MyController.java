@@ -44,6 +44,8 @@ public class MyController {
 
         log.info("request: {}", request);
 
+        long startTime = System.currentTimeMillis();
+
         Response response = Response.builder()
                 .uid(request.getUid())
                 .operationUid(request.getOperationUid())
@@ -83,7 +85,9 @@ public class MyController {
         }
 
         modifyResponseService.modify(response);
-        log.info("response: {}", response);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        log.info("response: {}", response, executionTime);
         modifyRequestService.forEach(service -> service.modify(request));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
